@@ -1,0 +1,53 @@
+---
+ - name: first_task
+   hosts: webgroup
+   become: true
+   gather_facts: false
+   tasks:
+
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      lineinfile:
+        path: /etc/apt/sources.list.d/grafana.list
+        line: "deb https://packages.grafana.com/oss/deb stable main"
+        create: yes
+      tags:
+       - never
+
+    - name: Install Prometheus
+      apt:
+        name: prometheus
+        state: present
+
+    - name: Update and upgrade apt packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+      tags:
+       - never
+ 
+    - name: install Grafana 
+      apt:
+        name: grafana
+        state: present
+    
+    - name: Just force systemd to reread configs
+      systemd:
+        daemon_reload: yes
+
+    - name: Adding datasource config
+      copy:
+        src: /home/user/ansible/prometheus.yaml
+        dest: /etc/grafana/provisioning/datasources
+
+    - name: deploy grafana dashboard
+      grafana_dashboard:
+        grafana_url: "http://localhost:3000"
+        state: present
+        grafana_api_key: "eyJrIjoieml3OVNVRVpHS1JBRFZYTDVyaG85bzlRY1kxVlJTeFQiLCJuIjoiTWV0cmljcyIsImlkIjoxfQ=="
+        path: /home/user/ansible/First_Task.json
+        uid: 1
+
+    - name: Just force systemd to reread configs
+      systemd:
+        daemon_reload: yes
+

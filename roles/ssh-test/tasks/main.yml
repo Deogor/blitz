@@ -1,0 +1,32 @@
+- name: Get file from remote
+  fetch:
+    flat: yes
+    src: /root/.ssh/id_rsa.pub #change to /usr/share/identityblitz/.ssh/id_rsa.pub
+    dest: /home/user/ansible/roles/ssh-test/files/ # change to /tmp/ansible/roles/blitz-sync-master/files/id_rsa.pub
+  tags: 
+    - fetch_ssh
+
+- name: Set authorized key taken from file
+  authorized_key:
+    user: root #blitz
+    state: present
+    key: "{{ lookup('file', '/home/user/ansible/roles/ssh-test/files/blitz01/root/.ssh/id_rsa.pub') }}" #"{{ lookup('file', '/tmp/ansible/roles/ssh-test/files/id_rsa.pub') }}"
+  tags: 
+    - add_ssh
+
+- name: edit sshd config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: 'AuthorizedKeysFile'
+    line: AuthorizedKeysFile      .ssh/authorized_keys .ssh/authorized_keys2
+  tags:
+    - add_ssh
+  notify: reload sshd
+
+- name: Copy a authorized_keys to authorized_keys2
+  copy:
+    src: /root/.ssh/authorized_keys
+    dest: /root/.ssh/authorized_keys2
+    remote_src: yes
+  tags:
+    - add_ssh

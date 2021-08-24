@@ -1,0 +1,25 @@
+- name: stop blitz-console
+  systemd:
+    state: stopped
+    name: blitz-console
+
+- name: stop blitz-idp
+  systemd:
+    state: stopped
+    name: blitz-idp
+
+- name: run incrond
+  systemd:
+    state: started
+    name: incrond
+    enabled: yes
+
+- name: start blitz-console
+  systemd:
+    state: started
+    name: blitz-idp
+
+- name: start blitz-idp
+  systemd:
+    state: started
+    name: blitz-idp

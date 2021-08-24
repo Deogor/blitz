@@ -1,0 +1,73 @@
+- name: Copy couchbase rpm to remote host
+  copy:
+    src: couchbase-server-community-6.0.0-centos7.x86_64.rpm
+    dest: /tmp
+    
+- name: install couchbase 6.0.0
+  yum:
+    name: /tmp/couchbase-server-community-6.0.0-centos7.x86_64.rpm
+    state: present
+    #- name: install couchbase
+    #  shell: rpm -i couchbase-server-community-6.0.0-centos7.x86_64.rpm
+
+- name: add iptables rule for couchbase with firewalld
+  shell: "firewall-cmd --direct --permanent --add-rule ipv4 filter INPUT 0 -p tcp --dport {{ item }} -j ACCEPT"
+  with_items:
+  - 9119
+  - 9091
+  - 21101
+  - 9998
+  - 11213
+  - 21200
+  - 21300
+  - 21250
+  - 21350
+  - 8087
+  - 4369
+  - 8091
+  - 8092
+  - 8093
+  - 8094
+  - 8095
+  - 8096
+  - 9100
+  - 9101
+  - 9102
+  - 9103
+  - 9104
+  - 9105
+  - 9110
+  - 9111
+  - 9112
+  - 9113
+  - 9114
+  - 9115
+  - 9116
+  - 9117
+  - 9118
+  - 9120
+  - 9121
+  - 9122
+  - 9130
+  - 9140
+  - 9999
+  - 11209
+  - 11210
+  - 11211
+  - 21100
+  - 11207
+  - 18091
+  - 18092
+  - 18093
+  - 18094
+  - 19130
+  - 21150
+  - 18095
+  - 18096
+  notify:
+  - reload firewalld
+  - Reload service couchbase
+    #- name: Reload service couchbase
+    #  systemd:
+    #    name: couchbase-server
+    #    enabled: yes

@@ -1,0 +1,10 @@
+- name: Install memcached
+  yum:
+    name: memcached
+    state: present
+
+- name: Make sure a service is running and enable it
+  systemd:
+    state: started
+    name: memcached
+    enabled: yes

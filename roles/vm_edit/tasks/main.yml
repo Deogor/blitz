@@ -1,0 +1,107 @@
+- name: Make sure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present
+    
+- name: Allow 'wheel' group to have passwordless sudo
+  become: true
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: visudo -cf %s
+
+- name: Add sudoers users to wheel group
+  user:
+    name: "{{ item }}"
+    groups: wheel
+    append: yes
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+  with_items: 
+    - srubizova
+    - vsurov
+    - asagitov
+    - asokova
+
+- name: Set authorized key taken from file
+  authorized_key:
+    user: asagitov
+    state: present
+    key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD7OQezu4es8TseeDiq0rUle5Qcm2RHMV5Pr2G6rJjB2bjd7zAFISxYRCyOHhiHfhIPupPI4jsrac4OTiypLcHKMqCbIVetsVZBnLrXz5nyYOGfcHfBsj1Dc44pGPoBVTGTT3Aj6ewbZ2NhQpc14b418wwePyxZ+p8PQovuUhZhMvsVENeCw+l0/0xTjt9OplV5XL4V19F4+kX3mR5rYc3DP1m0dTwbbJ0etpGXojoHDuJ0PfcIITDYxw39vPfvtx1EJVk+qA84C0B2qHyRqdox8gSDBtmSLZxSzRMxZvacOHC3x4fUyKgxwbRWP/GMni2MIcLe/yoDtbcqmF500/0H asagitov@phoenixit.ru
+
+- name: Set authorized key taken from file
+  authorized_key:
+    user: asokova
+    state: present
+    key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxJBXzneUlVdj17kGm6au5kYFxbNFrE+ttrQQ0dDAEhRYAuv88JpVI0YA7HqBZM6RXfn1y0wyUFTrzImGR00z61NQGGVvV3HBS2f/rg6GfofeVi2xAq014/hDLOwvIALUGMfcGOj+1Zpp04iLIPRAb9kjhw1d/l3os1gfFBIMgijX3j17CX32S7Hr9EWvLz39EEKvKcLdL8fRM9ZgEyNd+cD8ZPQmt0CAOOnYSe5hHxAzDGx0PZbkAu5y5fybWrEamBbCDGb7Nc4KN4JYZfGi7v71ZYlVTzLOlnffDrEu9DfX4EMW8fjaHgV1UA/sWbtiLFn0RHnTCZzJ2PwEeyVA7 juicetisia@Juicetisia
+
+- name: Set authorized key taken from file
+  authorized_key:
+    user: vsurov
+    state: present
+    key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7nYKfy6LJ8rHOniteo5rWCgufZp+l0ZWbEqc/mnw3d5KC0Suz4E479DySaj8/4ecu35r4iSOc+1wfNORRV+c2jF/y9GyOgXesY3Yjn90f62ybHHQTwXvAwtXMDyrvLQwxXJbHAyKbL5K2AgwV2wL3BxoRfiXFKOlE9sjwu+xXFsfNMhcmtVk17fwFDoOIQ7mL1CYKRYfHGU9/t3h7uELFGw9OeQmJSgXEhJz45QMSC8Pq3ZP/Es4olRuFkY9JeXLd1AVZlW25ozgNARJjTBng/qcfdAkBVWpNv+DdmeaVNR2i9APOQhvQwaWMbifoq/hEw6zW2peqI0l7i6hV/rYMWizB47iJN/Y4o+LFgfHEo45WbfRQ244/zMrnqph+4pibq+hlwTPVmE+hbRs2aTXdpr16hb3Gn3YuLowt06pgy6Mclqzu1afBQHuPcX6s0NyGPknUD3pedm93YVqTzW/6JPxmzb7n5ENu9wM+q4/xhdzDoofxFopZde4BYxvj7Ok= user@user-HP-ProBook-445-G7
+
+- name: Set authorized key taken from file
+  authorized_key:
+    user: srubizova
+    state: present
+    key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDqjDlK2f05FfqJCnj5B4Qlmmq06p6wpB2gUWZYa2KtZ2AvyqF/rIE4ibfSSrgfGIUFZGY7r+6LFDgKIWBFOKp5UGjMnTqHa4Wh5NLLbgIk1BzBkHF0mDI+5XfvbQAvOTFRs+KjqxwVqn2HFTzhbkW+VYYgIJ2jh8OUdp5xtgFKqHejxjclByBt2T1h45RnwHe24fo5wBCwAFKfaBLdBcsg9OlSvOMRpq+1YHPLaQ/PwJumw/bLryNttZ+IvIlk1bWXwmoRcj1xbr0FHAlChk2wOnfAUrQ+qMMX7nxdO001BJqRFDJXF9WpMFXjYsnsrbckpDBdwdHxdYCXAFyuAYBGuJi+kaa3KM9/XhMVY08sfJZQ5hMtnv/VBUhGfXYUHtqbPwchFblCjZ87EGhWkh7LTP1f7DAyKjnwAfAcMkjgDPeh+UOJ6qGy3NEuW60ujBaklnV+YTAhgvWo/c+sNAZlKdJhIJ1NlGNcnMRNgYBC9vf2TNau6W+mSPgQQwOCtc8= user-admin@user-HP-ProBook-440-G7
+    
+- hostname:
+    name: "{{ hostname }}"
+
+    #- name: install yum-utils
+    #  yum:
+    #    name: yum-utils
+- name: copy script for install docker
+  copy:
+    src: get-docker.sh
+    dest: /tmp/get-docker.sh
+    mode: '0777'
+
+- name: install docker
+  shell: /tmp/get-docker.sh
+
+- name: install epel and pip
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - epel-release
+    - python-pip
+    - nginx
+
+    #- name: Add repository
+    #  yum_repository:
+    #    name: docker
+    #    description: docker yum repository
+    #    baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+
+    #- name: install docker
+    #  yum:
+    #    name: "{{ item }}"
+    #  with_items:
+    #    - docker-ce
+    #    - docker-ce-cli
+    #    - containerd.io
+    #    - pip
+
+- name: enable service docker
+  systemd:
+    name: docker
+    enabled: yes
+    state: reloaded
+
+- name: Download docker-compose
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-Linux-x86_64"
+    dest: /usr/local/bin/docker-compose
+    mode: '0777'
+
+- name: deny root ssh connection
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '#PermitRootLogin yes'
+    line: PermitRootLogin no

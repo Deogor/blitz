@@ -1,0 +1,93 @@
+---
+ - name: logs
+   hosts: webgroup
+   become: true
+   gather_facts: false
+   tasks:
+
+    - name: Install logrotate
+      apt:
+        name: logrotate
+        state: present
+
+    - name: remove logrotate.conf
+      file:
+        path: /etc/logrotate.conf
+        state: absent
+
+    - name: Editing logrotate.conf
+      blockinfile:
+        path: /etc/logrotate.conf
+        create: yes
+        block: | 
+          # see "man logrotate" for details
+          # rotate log files weekly
+          daily
+          
+          # use the adm group by default, since this is the owning group
+          # of /var/log/syslog.
+          su root adm
+          
+          # keep 4 weeks worth of backlogs
+          rotate 10
+          
+          # create new (empty) log files after rotating old ones
+          create
+          
+          # use date as a suffix of the rotated file
+          dateext
+          
+          # uncomment this if you want your log files compressed
+          #compress
+          
+          # packages drop log rotation information into this directory
+          include /etc/logrotate.d
+          
+          # system-specific logs may be also be configured here.
+
+    - name: Editing logfiles for all logs
+      blockinfile:
+        path: /etc/logrotate.d/For_ALL
+        create: yes
+        block: |
+          /var/log/*.log {
+          	daily
+          	dateext
+          	rotate 10
+          	compress
+          	missingok
+          	create 777 root root
+          }
+    
+    - name: remove logrotate in cron
+      file:
+        path: /etc/cron.daily/logrotate
+        state: absent 
+    
+    - name: Editing logrotate in cron
+      blockinfile:
+        path: /etc/cron.daily/logrotate
+        create: yes
+        block: |
+          #!/bin/sh
+          
+          # skip in favour of systemd timer
+          if [ -d /run/systemd/system ]; then
+              exit 0
+          fi
+    
+          # this cronjob persists removals (but not purges)
+          if [ ! -x /usr/sbin/logrotate ]; then
+              exit 0
+          fi
+    
+          /usr/sbin/logrotate /etc/logrotate.conf
+          EXITVALUE=$?
+          if [ $EXITVALUE != 0 ]; then
+              /usr/bin/logger -t logrotate "ALERT exited abnormally with [$EXITVALUE]"
+          fi
+          exit $EXITVALUE
+    
+    - name: Just force systemd to reread configs (2.4 and above)
+      systemd:
+        daemon_reload: yes

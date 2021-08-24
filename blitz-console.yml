@@ -1,0 +1,6 @@
+---
+- hosts: blitz_serv
+  become:
+    true
+  roles:
+    - blitz-console

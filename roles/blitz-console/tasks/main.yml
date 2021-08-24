@@ -1,0 +1,75 @@
+- name: copy blitz_console.bin
+  copy:
+    src: blitz-console-3.11.1.bin
+    dest: /tmp
+    mode: '0777'
+
+    #- name: install console
+  #  shell:
+    #   cd /tmp && ./blitz-console-3.11.1.bin
+
+- name: ensure a list of packages installed
+  yum:
+    name: "{{ packages }}"
+  vars: 
+    packages: 
+    - python
+    - epel-release
+    - python-devel
+    - python-pip
+    - firewalld
+  notify: reload firewalld
+
+- pip:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - setuptools
+    - pexpect
+
+      #- pip:
+      #    name: pexpect
+
+- name: set domain, password and oracle_home
+  expect:
+    command: /tmp/blitz-console-3.11.1.bin
+    responses:
+      (i?)path to Oracle JDK: /opt/oracle/jdk/1.8.0_144
+      (i?)password for keystore: qwerty$4
+      (i?)URI of Blitz Identity Provider: /blitz
+      (i?)domain of Blitz Identity Provider: sso.dev.ppod.cbr.ru
+      
+- name: edit systemd blitz-console config
+  template:
+    src: blitz-console.service.j2
+    dest: /usr/lib/systemd/system/blitz-console.service
+
+- name: add iptables rule for blitz-console with firewalld
+  shell: "firewall-cmd --direct --permanent --add-rule ipv4 filter INPUT 0 -p tcp --dport {{ item }} -j ACCEPT"
+  with_items:
+  - 9000
+  - 11211
+  - 9001
+  - 8087
+
+  notify: reload firewalld
+
+- name: deny ipv6 connection
+  template:
+    src: 99-sysctl.conf.j2
+    dest: /etc/sysctl.d/99-sysctl.conf
+  notify: reload network manager
+
+- name: edit limits for java
+  template:
+    src: blitz-console.j2
+    dest: /etc/default/blitz-console
+  notify: start, enable console
+    # need to add /usr/share/identityblitz/blitz-console/bin/
+
+  #- name: start console and make it enabled
+  #  systemd:
+  #    name: blitz-console
+  #    state: reloaded
+  #    enabled: yes
+  #    daemon_reload: yes

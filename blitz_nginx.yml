@@ -1,0 +1,7 @@
+---
+- hosts: webgroup
+  become:
+    true
+  roles:
+    - blitz_nginx
+

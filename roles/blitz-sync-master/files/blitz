@@ -1,0 +1,13 @@
+/usr/share/identityblitz/blitz-config   IN_MODIFY,IN_ATTRIB,IN_CREATE,IN_DELETE,IN_CLOSE_WRITE  /usr/share/identityblitz/sync_conf.sh ./ $# $%
+/usr/share/identityblitz/blitz-config/devices   IN_MODIFY,IN_ATTRIB,IN_CREATE,IN_DELETE,IN_CLOSE_WRITE  /usr/share/identityblitz/sync_conf.sh devices $# $%
+/usr/share/identityblitz/blitz-config/flows     IN_MODIFY,IN_ATTRIB,IN_CREATE,IN_DELETE,IN_CLOSE_WRITE  /usr/share/identityblitz/sync_conf.sh flows $# $%
+/usr/share/identityblitz/blitz-config/custom_messages   IN_MODIFY,IN_ATTRIB,IN_CREATE,IN_DELETE,IN_CLOSE_WRITE  /usr/share/identityblitz/sync_conf.sh custom_messages $# $%
+/usr/share/identityblitz/blitz-config/saml      IN_MODIFY,IN_ATTRIB,IN_CREATE,IN_DELETE,IN_CLOSE_WRITE  /usr/share/identityblitz/sync_conf.sh saml $# $%
+/usr/share/identityblitz/blitz-config/saml/conf IN_MODIFY,IN_ATTRIB,IN_CREATE,IN_DELETE,IN_CLOSE_WRITE  /usr/share/identityblitz/sync_conf.sh saml $# $%
+/usr/share/identityblitz/blitz-config/saml/credentials  IN_MODIFY,IN_ATTRIB,IN_CREATE,IN_DELETE,IN_CLOSE_WRITE  /usr/share/identityblitz/sync_conf.sh saml $# $%
+/usr/share/identityblitz/blitz-config/saml/metadata     IN_MODIFY,IN_ATTRIB,IN_CREATE,IN_DELETE,IN_CLOSE_WRITE  /usr/share/identityblitz/sync_conf.sh saml $# $%
+/usr/share/identityblitz/blitz-config/simple    IN_MODIFY,IN_ATTRIB,IN_CREATE,IN_DELETE,IN_CLOSE_WRITE  /usr/share/identityblitz/sync_conf.sh simple $# $%
+/usr/share/identityblitz/blitz-config/assets    IN_MODIFY,IN_ATTRIB,IN_CREATE,IN_DELETE,IN_CLOSE_WRITE  /usr/share/identityblitz/sync_conf.sh assets $# $%
+/usr/share/identityblitz/blitz-config/assets/services   IN_MODIFY,IN_ATTRIB,IN_CREATE,IN_DELETE,IN_CLOSE_WRITE  /usr/share/identityblitz/sync_conf.sh assets $# $%
+/usr/share/identityblitz/blitz-config/assets/themes     IN_MODIFY,IN_ATTRIB,IN_CREATE,IN_DELETE,IN_CLOSE_WRITE  /usr/share/identityblitz/sync_conf.sh assets $# $%
+

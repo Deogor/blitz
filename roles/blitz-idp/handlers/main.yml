@@ -1,0 +1,11 @@
+#- name: reload firewalld
+#  systemd:
+#    name: firewalld
+#    state: restarted
+#    enabled: yes
+- name: start, enable idp
+  systemd:
+    name: blitz-idp
+    state: reloaded
+    enabled: yes
+    daemon_reload: yes

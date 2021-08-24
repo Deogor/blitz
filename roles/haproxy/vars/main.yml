@@ -1,0 +1,6 @@
+---
+ip_blitz_1: 
+ip_blitz_2: 
+virtual_ip: 
+netmask: 24
+interface: enp0s3 

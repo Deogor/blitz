@@ -1,0 +1,4 @@
+---
+path_nginx_ssl_crt: /root/ssl/dev.crt
+
+path_nginx_ssl_key: /root/ssl/dev.key

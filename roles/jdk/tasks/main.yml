@@ -1,0 +1,23 @@
+- name: Create a directory if it does not exist
+  file:
+    path: /opt/oracle/jdk
+    state: directory
+    mode: '0755'
+
+- name: Install unzip
+  yum:
+    name: unzip
+    state: present
+
+- name: Copy jdk archive to remote host
+  copy:
+    src: 1.8.0_144.zip
+    dest: /opt/oracle/jdk
+    mode: '0744'
+    # notify:
+
+- name: extract oracle jdk
+  unarchive:
+    src: /opt/oracle/jdk/1.8.0_144.zip
+    dest: /opt/oracle/jdk
+    remote_src: yes

@@ -1,0 +1,6 @@
+#!/bin/bash
+app_dir=/usr/share/identityblitz/
+node_list="{{ nodes }}"
+for node in $(echo "${node_list}"); do
+rsync -r -a ${app_dir}/${1} ${USER}@${node}:${app_dir};
+done

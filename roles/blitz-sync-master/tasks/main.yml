@@ -1,0 +1,83 @@
+- name: install incron and rsync
+  yum:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - incron
+      - rsync
+
+        #- name: install incron and rsync
+        #  yum:
+        #    name: rsync
+        #    state: present
+
+- name: Create a directory for ssh if it does not exist
+  file:
+    path: /usr/share/identityblitz/.ssh/
+    state: directory
+    owner: blitz
+    mode: '0700'
+
+- name: Create a 2048-bit SSH key for user blitz
+  user:
+    name: blitz
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: /usr/share/identityblitz/.ssh/id_rsa
+
+- name: copy icron tables for sync
+  copy:
+    src: blitz
+    dest: /var/spool/incron/blitz
+    mode: '600'
+    owner: blitz
+
+    #- name: change owner of incron table
+    #  shell: chown blitz /var/spool/incron/blitz
+    #- name: Change file ownership
+    #  file:
+    #    path: /var/spool/incron/blitz
+    #    owner: blitz
+
+- name: Create a directory for ssh if it does not exist
+  file:
+    path: /usr/share/identityblitz/scripts/
+    state: directory
+    mode: '0777'
+
+- name: copy script for sync
+  template:
+    src: config_sync.sh.j2
+    dest: /usr/share/identityblitz/sync_conf.sh
+    owner: blitz
+    mode: '0777'
+  notify:
+    - stop blitz-console
+    - stop blitz-idp
+    - run incrond
+    - start blitz-console
+    - start blitz-idp
+
+    #- name: Change file ownership
+    #  file:
+    #    path: /usr/share/identityblitz/sync_conf.sh
+    #    owner: blitz
+
+    #- name: change owner of script
+    #  shell: chown blitz /var/spool/incron/blitz
+    #- name: stop blitz-console
+    #  systemd:
+    #    state: stopped
+    #    name: blitz-console
+
+    #- name: stop blitz-idp
+    #  systemd:
+    #    state: stopped
+    #    name: blitz-idp
+
+    #- name: run incrond
+    #  systemd:
+    #    state: started
+    #    name: incrond
+    #    enabled: yes

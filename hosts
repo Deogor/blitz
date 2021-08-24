@@ -1,0 +1,38 @@
+#localhost ansible_ssh_host=192.168.3.20
+#test ansible_ssh_host=192.168.234.93 ansible_ssh_user=root
+blitz01     ansible_host=77.223.97.176 ansible_ssh_user=root 
+blitz02     ansible_host=84.38.182.59 ansible_ssh_user=root
+#couchbase01 ansible_host=77.223.98.176 ansible_ssh_user=root
+#couchbase02 ansible_host=37.228.117.120 ansible_ssh_user=root
+#couchbase03 ansible_host=80.249.150.208 ansible_ssh_user=root
+#balancer01 ansible_host=192.168.43.227 ansible_ssh_user=root
+#balancer02 ansible_host=82.148.29.13 ansible_ssh_user=root
+#vm1 ansible_host=192.168.14.35 ansible_ssh_user=user
+#test_balancer_1 ansible_host=192.168.43.55 ansible_ssh_user=centos
+#test_balancer_2 ansible_host=192.168.43.70 ansible_ssh_user=centos
+
+[blitz_serv]
+blitz01
+blitz02
+
+[couchbase]
+couchbase01
+couchbase02
+#couchbase03
+
+#[blitz_sync_master]
+#blitz01
+
+#[blitz_sync_slave]
+#blitz02
+
+[balancer]
+balancer01
+balancer02
+
+[test_vm]
+vm1
+
+[test_balancer]
+test_balancer_1
+test_balancer_2

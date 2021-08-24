@@ -1,0 +1,6 @@
+---
+- hosts: test_vm
+  become: true
+  roles:
+    - vm_edit
+

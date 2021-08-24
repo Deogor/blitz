@@ -1,0 +1,7 @@
+---
+- hosts: couchbase
+  become:
+    true
+  roles:
+    - couchbase
+

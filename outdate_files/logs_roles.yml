@@ -1,0 +1,6 @@
+---
+- hosts: webgroup
+  become:
+    true
+  roles:
+    - logs

@@ -1,0 +1,30 @@
+- name: copy ssl crt for nginx
+  template:
+    src: dev.crt.j2
+    dest: "{{ path_nginx_ssl_crt }}"
+    owner: blitz
+    mode: '0664'
+  tags:
+    - nginx
+  notify: reload nginx
+
+- name: copy ssl key for nginx
+  template:
+    src: dev.key.j2
+    dest: "{{ path_nginx_ssl_key }}"
+    owner: blitz
+    mode: '0664'
+  tags: 
+    - nginx
+  notify: reload nginx
+
+- name: copy ssl for haproxy
+  template:
+    src: sso.pem.j2
+    dest: /etc/haproxy/sso.pem
+    owner: root
+    mode: '0644'
+  tags:
+    - haproxy
+  notify: reload haproxy
+

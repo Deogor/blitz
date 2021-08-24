@@ -1,0 +1,28 @@
+host0.logsvm.org ansible_ssh_host=87.239.109.239 ansible_ssh_user=centos
+host1.logsvm.org ansible_ssh_host=87.239.109.88 ansible_ssh_user=centos
+host2.logsvm.org ansible_ssh_host=87.239.109.133 ansible_ssh_user=centos
+host3.logsvm.org ansible_ssh_host=185.241.194.247 ansible_ssh_user=centos
+host4.logsvm.org ansible_ssh_host=89.208.85.82 ansible_ssh_user=centos
+host5.logsvm.org ansible_ssh_host=89.208.209.70 ansible_ssh_user=centos
+host6.logsvm.org ansible_ssh_host=89.208.86.83 ansible_ssh_user=centos
+host7.logsvm.org ansible_ssh_host=79.137.175.138 ansible_ssh_user=deogor
+host8.logsvm.org ansible_ssh_host=79.137.175.147 ansible_ssh_user=deogor
+host9.logsvm.org ansible_ssh_host=79.137.175.192 ansible_ssh_user=deogor
+host10.logsvm.org ansible_ssh_host=79.137.174.205 ansible_ssh_user=deogor
+
+
+
+[webgroup]
+host0.logsvm.org
+host1.logsvm.org
+host2.logsvm.org
+host3.logsvm.org
+host4.logsvm.org
+host5.logsvm.org
+host6.logsvm.org
+host7.logsvm.org
+host8.logsvm.org
+host9.logsvm.org
+host10.logsvm.org
+
+

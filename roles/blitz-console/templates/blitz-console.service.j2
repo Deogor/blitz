@@ -1,0 +1,19 @@
+[Unit]
+Description = Blitz IDP Console
+Documentation = https://docs.identityblitz.ru/
+After = network-online.target
+
+[Service]
+ExecStart = /usr/share/identityblitz/blitz-console/bin/blitz-console-ee
+WorkingDirectory = /usr/share/identityblitz
+Type = simple
+PIDFile = /usr/share/identityblitz/blitz-console/RUNNING_PID
+User = blitz
+Group = blitz
+
+Restart = always
+RestartSec = 30
+
+[Install]
+WantedBy = multi-user.target
+

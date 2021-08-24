@@ -1,0 +1,17 @@
+- name: reload firewalld
+  systemd:
+    name: firewalld
+    state: restarted
+    enabled: yes
+
+- name: start, enable console
+  systemd:
+    name: blitz-console
+    state: reloaded
+    enabled: yes
+    daemon_reload: yes
+
+- name: reload network manager
+  systemd:
+    name: network.service
+    state: restarted

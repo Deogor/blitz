@@ -1,0 +1,10 @@
+---
+- hosts: webgroup
+  become:
+    true
+  roles:
+    - memcached
+    - jdk
+    - blitz_nginx
+    - blitz-console
+    - blitz-idp

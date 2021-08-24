@@ -1,0 +1,32 @@
+- name: copy blitz_idp.bin
+  copy:
+    src: blitz-idp-3.11.1.bin
+    dest: /tmp
+    mode: '0777'
+
+- name: set domain, password and oracle_home
+  expect:
+    chdir: /tmp
+    command: ./blitz-idp-3.11.1.bin
+    responses:
+      (i?)path to Oracle JDK: /opt/oracle/jdk/1.8.0_144
+
+- name: edit systemd blitz-idp config
+  template:
+    src: blitz-idp.service.j2
+    dest: /usr/lib/systemd/system/blitz-idp.service
+
+- name: edit systemd blitz-idp config
+  template:
+    src: blitz-idp.j2
+    dest: /etc/default/blitz-idp 
+  notify: start, enable idp
+
+  #- name: start idp and make it enabled
+  #  systemd:
+  #    name: blitz-idp
+  #    state: started
+  #    enabled: yes
+  #    daemon_reload: yes
+
+

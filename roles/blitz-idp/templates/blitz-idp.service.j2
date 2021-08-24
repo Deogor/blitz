@@ -1,0 +1,18 @@
+[Unit]
+Description = Blitz IDP
+Documentation = https://docs.identityblitz.ru/
+After = network-online.target
+
+[Service]
+ExecStart = /usr/share/identityblitz/blitz-idp/bin/blitz-idp-ee
+WorkingDirectory = /usr/share/identityblitz
+Type = simple
+PIDFile = /usr/share/identityblitz/blitz-idp/RUNNING_PID
+User = blitz
+Group = blitz
+
+Restart = always
+RestartSec = 30
+
+[Install]
+WantedBy = multi-user.target
