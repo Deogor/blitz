@@ -18,16 +18,3 @@ defaults
     timeout server          1m
     timeout check           10s
     maxconn                 3000
-
-
-frontend http_frontend
-bind *:80 #ssl crt /etc/haproxy/haproxy.pem
-mode http
-default_backend mytest1_web
-
-backend mytest1_web
-mode http
-balance roundrobin
-server mytestweb1 {{ ip_blitz_1 }}:80 # check ssl verify none
-server mytestweb2 {{ ip_blitz_2 }}:443 # check ssl verify none
-
