@@ -1,14 +1,17 @@
-- name: make virtual ip for blitz
-  shell: "pcs resource create blitz_virtual_ip ocf:heartbeat:IPaddr2 ip={{ virtual_ip }} cidr_netmask={{ netmask }} nic={{ interface }} op monitor interval=30s"
+- name: Install a list of packages
+  ansible.builtin.apt:
+    pkg:
+    - haproxy
+    - hacluster
+    - corosync
+    - pacemaker
+
+- name: make virtual ip for haproxy
+  ansible.builtin.shell: "pcs resource create blitz_virtual_ip ocf:heartbeat:IPaddr2 ip={{ virtual_ip }} cidr_netmask={{ netmask }} nic={{ interface }} op monitor interval=30s"
   tags: master
 
-- name: install haproxy
-  yum:
-    name: haproxy
-    state: present
-
 - name: edit haproxy.cfg
-  template:
+  ansible.builtin.template:
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
 
